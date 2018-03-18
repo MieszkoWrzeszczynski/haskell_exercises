@@ -98,9 +98,9 @@ nalezy x e = (foldl (\c d -> c + (if d == e then 1 else 0) ) 0 x) > 0
 map'' f xs = foldl (\acc value -> acc ++ [(f value)]) [] xs
 
 -- zad. 7.
-last_own xs = foldl (\acc value -> value) 0 xs
-head_own xs = foldr (\value acc -> value) 0 xs
-max_own xs = foldr (\value acc -> if value > acc then value else acc ) (last xs) xs
+last_own xs = foldr1 (\acc value -> value) xs
+head_own xs = foldr1 (\value acc -> value) xs
+max_own xs = foldr1 (\value acc -> if value > acc then value else acc ) xs
 
 -- zad. 8.
 zip_own _ [] = []
