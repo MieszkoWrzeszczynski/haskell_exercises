@@ -65,3 +65,28 @@ t1 = Node 'a' (Node 'b'  Empty
 -- "abdfceg"
 -- postorder t1
 -- "fdbgeca"
+-- zad. 3.
+treeMemberIn tr mem = mem `elem` (inorder tr)
+treeMemberPre tr mem = mem `elem` (preorder tr)
+treeMemberPost tr mem = mem `elem` (postorder tr)
+
+
+-- zad. 4.
+-- subtree Empty Empty = true
+-- subtree Empty (Node a l r) = false
+-- subtree (Node a l r) Empty = false
+-- subtree (Node a l r) Empty =
+
+--zad. 5.
+-- bylevel :: Tree a -> [[a]]
+-- bylevel t = step [t]
+--     where step [] = []
+--           step ts = map element ts : step (concatMap subtrees ts)
+
+subtrees :: Tree a -> [Tree a]
+subtrees (Node l _ s) = s
+
+bylevel :: Tree a -> [[a]]
+bylevel t = step [t]
+    where step [] = []
+          step ts = map element ts : step (concatMap subtrees ts)
