@@ -26,14 +26,24 @@ max_path (Node a l r) = depth (Node a l r)
 
 
 -- zad. 4.
-data Email = EmailAddress [Char]
+data Email = Email String String
   deriving(Show)
 
 class Adres a where
- adres :: [a] -> Email
+ containsAt :: a -> Bool
+ hasLenUp3  :: a -> Bool
 
-instance Adres Char where
-  adres x = EmailAddress (x ++ "@")
+instance Adres Email where
+  containsAt (Email name domain) =  '@' `elem` (name ++ domain)
+  hasLenUp3 (Email name domain) = length(name ++ domain) >= 3
+
+-- Email dzieli się na nazwę + domenę
+-- - Email musi zawierać @
+-- - cały email musi mieć min. 3 znaki
+-- Checkifemailisvalid sprawdza czy Email jest poprawny
+
+checkIfEmailIsValid :: Email -> Bool
+checkIfEmailIsValid ad = containsAt ad && hasLenUp3 ad
 
 -- zad. 5.
 
