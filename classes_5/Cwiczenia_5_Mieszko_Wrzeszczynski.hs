@@ -26,22 +26,19 @@ max_path (Node a l r) = depth (Node a l r)
 
 
 -- zad. 4.
-
-
-
-
-class Adres a where
- adres :: a -> Bool
-
-data Email = EmailAddress Int
+data Email = EmailAddress [Char]
   deriving(Show)
 
-instance Adres Int where
-  adres 0 = True
-  adres _ = False
+class Adres a where
+ adres :: [a] -> Email
 
+instance Adres Char where
+  adres x = EmailAddress (x ++ "@")
+
+-- zad. 5.
+
+-- helper
 unique [] = []
 unique (x:xs) = x : unique(filter (x /=) xs)
 
--- zad. 5.
 count_occur xs = foldl (\acc d -> unique(acc ++ [(d,length(filter(\x -> x == d) xs))]) ) [] xs
