@@ -2,6 +2,7 @@
 -- a
 data Marka = Volvo | Audi | Fiat | Bugati | Seat
   deriving(Show)
+
 data Kraj = Polska | Anglia | Litwa | USA
 data Moto = Marka String [String]
 
@@ -35,6 +36,7 @@ postorder Empty = []
 postorder (Node a l r) = postorder l ++ postorder r ++ [a]
 
 data Tree a = Empty | Node a (Tree a) (Tree a)
+  deriving(Show)
 
 -- a
 t :: Tree Int
@@ -42,6 +44,13 @@ t = Node 1 (Node 2 (Node 4 Empty Empty)
         (Node 5 Empty (Node 8 Empty Empty)))
     (Node 3 (Node 6 Empty (Node 9 Empty Empty))
         (Node 7 Empty Empty))
+
+
+-- -- preorder t
+-- t3 = Node 1 (Node 2 (Node 4 Empty Empty)
+--         (Node 5 Empty Empty))
+--     (Node 3 (Node 6 Empty (Node 9 Empty Empty))
+--         (Node 7 Empty Empty))
 
 -- preorder t
 -- [1,2,4,5,8,3,6,9,7]
@@ -65,6 +74,7 @@ t1 = Node 'a' (Node 'b'  Empty
 -- "abdfceg"
 -- postorder t1
 -- "fdbgeca"
+
 -- zad. 3.
 treeMemberIn tr mem = mem `elem` (inorder tr)
 treeMemberPre tr mem = mem `elem` (preorder tr)
@@ -72,21 +82,26 @@ treeMemberPost tr mem = mem `elem` (postorder tr)
 
 
 -- zad. 4.
--- subtree Empty Empty = true
--- subtree Empty (Node a l r) = false
--- subtree (Node a l r) Empty = false
--- subtree (Node a l r) Empty =
+-- to execute subTree eg. subTree t t4
+t4 :: Tree Int
+t4 = Node 3 (Node 6 Empty Empty)
+     (Node 7 Empty Empty)
 
---zad. 5.
--- bylevel :: Tree a -> [[a]]
--- bylevel t = step [t]
---     where step [] = []
---           step ts = map element ts : step (concatMap subtrees ts)
+-- helper fun
+subset :: Eq a => [a] -> [a] -> Bool
+subset xs y = length(y) == length(filter (\x -> x `elem` y) xs)
 
-subtrees :: Tree a -> [Tree a]
-subtrees (Node l _ s) = s
+subTree :: Eq a => Tree a -> Tree a -> Bool
+subTree a  b = subset (inorder a) (inorder b) && subset (postorder a) (postorder b)
 
-bylevel :: Tree a -> [[a]]
-bylevel t = step [t]
-    where step [] = []
-          step ts = map element ts : step (concatMap subtrees ts)
+-- zad. 5.
+poziomo :: Tree a -> [a]
+poziomo tree = tbf [tree]
+    where
+        tbf [] = []
+        tbf xs = map nodeValue xs ++ tbf (concat (map leftAndRightNodes xs))
+        nodeValue (Node a _ _) = a
+        leftAndRightNodes (Node _ Empty Empty) = []
+        leftAndRightNodes (Node _ Empty b)     = [b]
+        leftAndRightNodes (Node _ a Empty)     = [a]
+        leftAndRightNodes (Node _ a b)         = [a,b]
